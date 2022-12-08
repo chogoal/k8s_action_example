@@ -34,5 +34,5 @@ jobs:
         run: |
           curl -X POST ${{ secrets.DOCKER_PULL_TRIGGER_URL }} \
           --data image=${{ secrets.DOCKER_IMAGE }} \
-          --data port=8081 \
+          --data port=3000 \
           --data targetPort=3000
