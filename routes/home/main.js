@@ -13,7 +13,7 @@ const router = express.Router()
 router.route('/').get( (req, res, next) => {
 	const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
 	console.log("Request arrived: " + ip);
-	return res.render(publicHTML + '/playjs.html');
+	return res.render(publicHTML + '/index.html');
 });
 
 export default router
