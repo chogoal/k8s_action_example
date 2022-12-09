@@ -1,9 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="playjs.css">
+	<title>K8S CI/CD Example</title>
 	<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Nanum+Pen+Script|Raleway" rel="stylesheet">
-	<script src="playjs.js"></script>
 </head>
 <body>
 	<header>
@@ -31,4 +30,139 @@
 		</div>
 	</div>
 </body>
+
+<!-- javascript -->
+<script>
+	window.onload = pageLoad;
+
+	function pageLoad() {
+		var guessbutton1 = document.getElementById("guessbutton");
+		var ng1 = document.getElementById("ng");
+		guessbutton1.onclick = guessLetter;
+		ng1.onclick = newGame;
+	}
+
+
+	var POSSIBLE_WORDS = ["obdurate" , "verisimilitude" , "defenestrate" , "obsequious" , "dissonant" , "today" , "idempotent"];
+	var MAX_GUESSES = 6;
+
+	var guesses = "";
+	var guessCount = MAX_GUESSES;
+	var word = "";
+
+	function newGame() {
+		var index = Math.floor(Math.random() * 7);
+		word = POSSIBLE_WORDS[index];
+		guessCount = MAX_GUESSES; guesses = "";
+		document.getElementById("guessbutton").disabled = false;
+		updatePage();
+	}
+
+	function guessLetter() {
+		var letter = document.getElementById("hguess").value;
+		var clueString = document.getElementById("clue").innerHTML;
+		if(guesses.indexOf(letter) >= 0 || clueString.indexOf("_") < 0) {
+			return;
+		}
+		guesses += letter;
+		if(word.indexOf(letter) < 0) {
+			guessCount--;
+		}
+		updatePage();
+	}
+
+	function updatePage() {
+
+		var clueString = "";
+		for(var i = 0; i < word.length; i++) {
+			var wwordd = word.charAt(i);
+			if(guesses.indexOf(wwordd) >= 0) {
+				clueString += wwordd + " ";
+			}
+			else {
+				clueString += "_ "
+			}
+		}
+
+		// var chanceArea = document.getElementById("chances");
+		// chanceArea.innerHTML = "You have " + guessCount + " chances to guess";
+
+		document.getElementById("clue").innerHTML = clueString;
+		
+		var guessArea = document.getElementById("guessstr");
+		if(guessCount == 0) {
+			guessArea.innerHTML = "you lose";
+		}
+		else if(clueString.indexOf("_") < 0) {
+			guessArea.innerHTML = "you win";
+		}
+		else {
+			guessArea.innerHTML = "Guesses : " + guesses;
+		}
+
+		var imgname = "hangman" + guessCount + ".gif";
+		document.getElementById("hangmanpic").src = imgname;
+	}
+</script>
+
+<!-- css -->
+<style>
+	* {margin: 0; padding: 0;}
+	body {
+		width: 960px;
+		margin: 0 auto;
+	}
+	img {border: 0;}
+	header {
+		width: 900px; height: 80px;
+		background-color: #f6f9d4;
+		position: fixed;
+		top: 0;
+		padding: 40px 30px 0 30px;
+		z-index: 1;
+	}
+	#title {
+		height: 40px;
+		text-align: center;
+		font-size: 30px;
+		font-weight: bold;
+		font-family: 'Indie Flower', cursive;
+	}
+	.main-menu {
+		display: block;
+		float: left;
+		width: 100px;
+		height: 40px;
+		text-align: center;
+		line-height: 40px;
+		color: black;
+		text-decoration: underline;
+	}
+	#content {
+		margin-top: 120px;
+		padding: 10px;
+	}
+	.lab {
+		padding: 10px;
+		border: 1px solid black;
+		margin-top: 10px;
+	}
+	#hangman {
+		text-align: center;
+	}
+	#newgamearea {
+		margin-top: 2em;
+	}
+	#clue, #guessstr {
+		font-family: monospace;
+		font-size: 2em;
+		padding: 1em;
+	}
+	#container {
+		width: 400px;
+		height: 400px;
+		position: relative;
+		background-color: yellow;
+	}
+</style>
 </html>
